@@ -9,8 +9,7 @@ function App() {
   const email = useRef(null);
   const age = useRef(null);
 
-  const users = useSelector(state => state.users.user);
-  console.log(users);
+  const user = useSelector(state => state.users.user);
   
   document.body.style.backgroundColor = "#0D0714"
 
@@ -51,6 +50,17 @@ function App() {
       }
 
       dispatch({type: "USER_ADD", payload: user});
+      name.current.value = null
+      email.current.value = null
+      age.current.value = null
+    }
+
+  }
+
+  function handleDelete(id) {
+    let isDelete = confirm("Do you want to Delete?");
+    if (isDelete) {
+      dispatch({type: "TODO_DELETE", payload: id})
     }
 
   }
@@ -83,7 +93,7 @@ function App() {
 
                 <tbody>
                   {
-                    users.length > 0 && users.map((el, index) => {
+                    user.length > 0 && user.map((el, index) => {
                       return(
                         <tr key={index}>
                           <td className='border text-center text-white'>{index + 1}</td>
@@ -91,10 +101,10 @@ function App() {
                           <td className="border text-center text-white">{el.email}</td>
                           <td className='border text-center text-white'>{el.age}</td>
                           <td className="border text-center text-white">
-                              <div className='flex gap-3'>
-                                <FaTrashAlt className="cursor-pointer" />
+                              <span className='flex gap-3'>
+                                <FaTrashAlt onClick = {() => {handleDelete(user.id)}} className="cursor-pointer" />
                                 <FaRegEdit className="cursor-pointer" />
-                              </div>
+                              </span>
                           </td>
                         </tr>
                       )
