@@ -55,7 +55,7 @@ function App() {
   function handleClick(e) {
     e.preventDefault();
 
-    const isValid = validate();
+    const isValid = validate(name, email, age);
 
     if (isValid) {
       const user = {
@@ -94,6 +94,7 @@ function App() {
                     <th className='border text-center text-white'>Actions</th>
                   </tr>
                 </thead>
+                
                 <tbody>
                   <tr>
                     <td className='border text-center text-white'>1</td>
