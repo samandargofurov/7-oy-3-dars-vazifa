@@ -1,13 +1,13 @@
 const defaultState = {
-    users: []
+    user: []
 }
 
 export function userReducer(state = defaultState, action) {
     if(action.type == "USER_ADD") {
-        let copied = JSON.parse(JSON.stringify(state.users))
+        let copied = JSON.parse(JSON.stringify(state.user))
         copied.push(action.payload)
 
-        return {...state, users: copied}
+        return {...state, user: copied}
 
     } else if (action.type == "USER_DELETE") {
     } else if (action.type == "USER_EDIT") {

@@ -1,50 +1,35 @@
 import { FaTrashAlt } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import './App.css'
-import { useDispatch } from "react-redux";
 
 function App() {
-  
-  document.body.style.backgroundColor = "#0D0714"
-
   const name = useRef(null);
   const email = useRef(null);
   const age = useRef(null);
 
+  const users = useSelector(state => state.users.user);
+  console.log(users);
+  
+  document.body.style.backgroundColor = "#0D0714"
+
+
   const dispatch = useDispatch();
 
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
   const validate = (name, email, age) => {
-    if (name.trim().length > 3) {
+
+    if (name > 3) {
       alert("name is empty")
       return false
     }
 
-    if (email.trim().length < 3) {
-      alert("Email is empty");
-      return false;
-    }
-
-    const emailValid = validateEmail(email);
-    if (!emailValid) {
+    if (email < 3) {
       alert("Email is empty");
       return false;
     }
 
     if (age < 0 || age > 160) {
-      alert("age is empty")
-      return false
-    }
-
-    if (!Number(age)) {
       alert("age is empty")
       return false
     }
@@ -55,11 +40,12 @@ function App() {
   function handleClick(e) {
     e.preventDefault();
 
-    const isValid = validate(name, email, age);
+    const isValid = validate();
 
     if (isValid) {
       const user = {
         name: name.current.value,
+        email: email.current.value,
         age: age.current.value,
         id: Date.now(),
       }
@@ -94,20 +80,26 @@ function App() {
                     <th className='border text-center text-white'>Actions</th>
                   </tr>
                 </thead>
-                
+
                 <tbody>
-                  <tr>
-                    <td className='border text-center text-white'>1</td>
-                    <td className='border text-center text-white'>John</td>
-                    <td className="border text-center text-white">test@gmail.com</td>
-                    <td className='border text-center text-white'>20</td>
-                    <td className="border text-center text-white">
-                        <div className='flex gap-3'>
-                          <FaTrashAlt className="cursor-pointer" />
-                          <FaRegEdit className="cursor-pointer" />
-                        </div>
-                    </td>
-                  </tr>
+                  {
+                    users.length > 0 && users.map((el, index) => {
+                      return(
+                        <tr key={index}>
+                          <td className='border text-center text-white'>{index + 1}</td>
+                          <td className='border text-center text-white'>{el.name}</td>
+                          <td className="border text-center text-white">{el.email}</td>
+                          <td className='border text-center text-white'>{el.age}</td>
+                          <td className="border text-center text-white">
+                              <div className='flex gap-3'>
+                                <FaTrashAlt className="cursor-pointer" />
+                                <FaRegEdit className="cursor-pointer" />
+                              </div>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
                 </tbody>
               </table>
             </div>
